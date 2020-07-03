@@ -1,6 +1,5 @@
 # Snipping tool
-Simple WPF application which grabs screenshot of your screen. 
-
+Simple Windows application which grabs screenshot of your screen. Supports multiple monitors.
 
 ## Startup Arguments
 Application has to be started with arguments. 
