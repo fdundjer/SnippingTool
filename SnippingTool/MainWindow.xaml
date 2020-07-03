@@ -1,0 +1,36 @@
+﻿<Window x:Class="SnippingTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Loaded="MainWindow_OnLoaded"
+        KeyDown="MainWindow_OnKeyDown"
+        KeyUp="MainWindow_OnKeyUp"
+        WindowStyle="None" 
+        Topmost="True"
+        Margin="0" 
+        Padding="0" 
+        Background="Transparent"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        mc:Ignorable="d"
+        Title="SnippingTool">
+    <Grid>
+        <Canvas Name="LayoutRoot" Background="Transparent" Margin="0">
+            <Path Stroke="Black" StrokeThickness="1" Fill="Black"
+                  Margin="0"
+                  Opacity="0.62"
+                  MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"
+                  MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp"
+                  MouseMove="UIElement_OnMouseMove">
+                <Path.Data>
+                    <CombinedGeometry x:Name="ScreenArea" GeometryCombineMode="Xor" />
+                </Path.Data>
+            </Path>
+            <TextBlock Name="PositionInfo"
+                       Foreground="White"
+                       FontFamily="Consolas"
+                       FontSize="12"/>
+        </Canvas>
+    </Grid>
+</Window>
