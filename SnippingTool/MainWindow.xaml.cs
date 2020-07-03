@@ -115,7 +115,7 @@ namespace SnippingTool
                 return;
             }
 
-            // Capture mouse movement since user pressed the left click
+            // Capture mouse movement when left click is pressed
             path.CaptureMouse();
             Cursor = Cursors.Cross;
 
@@ -130,11 +130,12 @@ namespace SnippingTool
                 return;
             }
 
-            // Stop capture and take screenshot
+            // Stop capture when left click is released
             _canCapture = false;
             Cursor = Cursors.Arrow;
-
             path.ReleaseMouseCapture();
+
+            // Save screenshot
             TakeScreenShot(e.GetPosition(path));
         }
 
@@ -161,7 +162,7 @@ namespace SnippingTool
                     Y = _cursorMovePoint.Y - _dragPoint.Y
                 };
 
-                // Set old point a new value
+                // Store new value as old point
                 _dragPoint.X = _cursorMovePoint.X;
                 _dragPoint.Y = _cursorMovePoint.Y;
 
@@ -287,7 +288,7 @@ namespace SnippingTool
         }
 
         /// <summary>
-        ///     Updates the geometry to get selected area effect.
+        ///     Updates the geometry to create selected area effect.
         /// </summary>
         private void DrawGeometry()
         {
