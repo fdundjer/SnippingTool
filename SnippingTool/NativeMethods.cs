@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="NativeMethods.cs" company="Pics.rs">
-//     Author: Filip Dunđer
-//     Copyright (c) Pics.rs
-// </copyright>
-//-----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace SnippingTool

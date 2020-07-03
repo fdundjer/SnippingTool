@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="Pics.rs">
-//     Author: Filip Dunđer
-//     Copyright (c) Pics.rs
-// </copyright>
-//-----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;

@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="Pics.rs">
-//     Author: Filip Dunđer
-//     Copyright (c) Pics.rs
-// </copyright>
-//-----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
