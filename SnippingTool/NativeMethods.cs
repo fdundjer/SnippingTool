@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NativeMethods.cs" company="Pics.rs">
 //     Author: Filip Dunđer
-//     Copyright (c) Pics.rs. All rights reserved.
+//     Copyright (c) Pics.rs
 // </copyright>
 //-----------------------------------------------------------------------
 
