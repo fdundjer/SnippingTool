@@ -36,7 +36,11 @@ namespace SnippingTool
         public void ApplicationStart(object sender, StartupEventArgs e)
         {
             Parser.Default.ParseArguments<StartOptions>(e.Args)
-                .WithParsed(StartOverlay).WithNotParsed(errors => { Shutdown(1); });
+                .WithParsed(StartOverlay).WithNotParsed(errors =>
+                {
+                    MessageBox.Show("Invalid startup arguments.", "Error");
+                    Shutdown(1);
+                });
         }
 
         protected override void OnStartup(StartupEventArgs e)
