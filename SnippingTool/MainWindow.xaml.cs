@@ -36,46 +36,13 @@ namespace SnippingTool
                 Opacity = 0.9
             };
 
-            SizeChanged += (sender, args) =>
-            {
-                if (_backgroundBitmap == null)
-                {
-                    return;
-                }
-
-                Background = new ImageBrush(_backgroundBitmap.GetBitmapSource());
-            };
-
             _imagePath = imagePath;
             _closeKey = closeKey;
         }
 
-        /// <summary>
-        ///     Gets the rectangle that represents the desktop bounds.
-        /// </summary>
-        /// <returns>New instance of <see cref="Rectangle"/>.</returns>
-        private static Rectangle GetDesktopBounds()
-        {
-            var l = int.MaxValue;
-            var t = int.MaxValue;
-            var r = int.MinValue;
-            var b = int.MinValue;
-
-            // It would be nice to remove Windows Forms reference at some point
-            foreach (var screen in System.Windows.Forms.Screen.AllScreens)
-            {
-                if (screen.Bounds.Left < l) l = screen.Bounds.Left;
-                if (screen.Bounds.Top < t) t = screen.Bounds.Top;
-                if (screen.Bounds.Right > r) r = screen.Bounds.Right;
-                if (screen.Bounds.Bottom > b) b = screen.Bounds.Bottom;
-            }
-
-            return Rectangle.FromLTRB(l, t, r, b);
-        }
-
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var size = GetDesktopBounds();
+            var size = GetAllScreenBounds();
 
             var screenLeft = size.Left;
             var screenTop = size.Top;
@@ -99,6 +66,64 @@ namespace SnippingTool
             // Setup geometry
             ScreenArea.Geometry1 = new RectangleGeometry(new Rect(0, 0, ActualWidth, ActualHeight));
             ScreenArea.Geometry2 = new RectangleGeometry(Rect.Empty);
+        }
+
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            _backgroundBitmap?.Dispose();
+            _backgroundBitmap = null;
+        }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_backgroundBitmap == null)
+            {
+                return;
+            }
+
+            Background = new ImageBrush(_backgroundBitmap.GetBitmapSource());
+        }
+
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == _closeKey)
+            {
+                Close();
+                return;
+            }
+
+            if (e.Key != Key.Space)
+            {
+                return;
+            }
+
+            if (_canMove)
+            {
+                return;
+            }
+            
+            _dragPoint = Mouse.GetPosition(this);
+            _canMove = true;
+
+            UpdatePositionText();
+        }
+
+        private void MainWindow_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Space)
+            {
+                return;
+            }
+
+            if (!_canMove)
+            {
+                return;
+            }
+
+            _dragPoint = new Point(-1, -1);
+            _canMove = false;
+
+            UpdatePositionText();
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -166,48 +191,6 @@ namespace SnippingTool
 
             UpdatePositionText();
             DrawGeometry();
-        }
-
-        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == _closeKey)
-            {
-                Close();
-                return;
-            }
-
-            if (e.Key != Key.Space)
-            {
-                return;
-            }
-
-            if (_canMove)
-            {
-                return;
-            }
-            
-            _dragPoint = Mouse.GetPosition(this);
-            _canMove = true;
-
-            UpdatePositionText();
-        }
-
-        private void MainWindow_OnKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Space)
-            {
-                return;
-            }
-
-            if (!_canMove)
-            {
-                return;
-            }
-
-            _dragPoint = new Point(-1, -1);
-            _canMove = false;
-
-            UpdatePositionText();
         }
 
         private void TakeScreenShot(Point point)
@@ -292,6 +275,29 @@ namespace SnippingTool
             var height = Math.Abs(_cursorMovePoint.Y - _cursorPoint.Y); 
 
             ((RectangleGeometry) (ScreenArea.Geometry2)).Rect = new Rect(x, y, width, height);
+        }
+
+        /// <summary>
+        ///     Gets the rectangle that represents the bounds of all screens together.
+        /// </summary>
+        /// <returns>New instance of <see cref="Rectangle"/>.</returns>
+        private Rectangle GetAllScreenBounds()
+        {
+            var l = int.MaxValue;
+            var t = int.MaxValue;
+            var r = int.MinValue;
+            var b = int.MinValue;
+
+            // It would be nice to remove Windows Forms reference at some point
+            foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+            {
+                if (screen.Bounds.Left < l) l = screen.Bounds.Left;
+                if (screen.Bounds.Top < t) t = screen.Bounds.Top;
+                if (screen.Bounds.Right > r) r = screen.Bounds.Right;
+                if (screen.Bounds.Bottom > b) b = screen.Bounds.Bottom;
+            }
+
+            return Rectangle.FromLTRB(l, t, r, b);
         }
     }
 }
